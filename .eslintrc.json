@@ -20,5 +20,12 @@
         "out",
         "dist",
         "**/*.d.ts"
+    ],
+    "@typescript-eslint/naming-convention": [
+        "warn",
+            {
+            "selector": "function",
+            "format": ["PascalCase", "camelCase"]
+            }
     ]
 }
