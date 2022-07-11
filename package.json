@@ -10,10 +10,31 @@
 		"Other"
 	],
 	"activationEvents": [
+    	"onView:react-sidebar",
 		"onCommand:react-vscode-extention.viewconfig"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "react-sidebar-view",
+					"title": "ReactVsCode",
+					"icon": "asset/cloud-up.svg"
+				}
+			]
+		},
+		"views": {
+			"react-sidebar-view": [
+				{
+					"type": "webview",
+					"id": "react-sidebar",
+					"name": "ReactVsCode",
+					"icon": "asset/cloud-up.svg",
+					"contextualTitle": "ReactVsCode"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "react-vscode-extention.viewconfig",

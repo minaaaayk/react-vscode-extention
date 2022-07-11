@@ -2,12 +2,22 @@
 // Import the module and reference it with the alias vscode in your code below
 import path = require('path');
 import * as vscode from 'vscode';
+import { getWebviewContent } from './getWebviewContent';
+import { SidebarProvider } from './SidebarProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	
-	console.log('Congratulations, your extension "react-vscode-extention" is now active!');
+	// console.log('Congratulations, your extension "react-vscode-extention" is now active!');
+	const sidebarProvider = new SidebarProvider(context.extensionUri);
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(
+		"react-sidebar",
+		sidebarProvider
+		)
+	);
+
 
 	context.subscriptions.push(vscode.commands.registerCommand('react-vscode-extention.viewconfig', () => {
 		// vscode.window.showInformationMessage('Hello World from react-vscode-extention!');
@@ -29,40 +39,6 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 }
 
-function getWebviewContent(context:vscode.ExtensionContext, webview:vscode.Webview): string {
-    // Use a nonce to only allow specific scripts to be run
-
-    const reactAppPathOnDisk = vscode.Uri.file(
-    path.join(context.extensionPath, "dist", "index.js")
-    );
-    const reactAppUri = reactAppPathOnDisk.with({ scheme: "vscode-resource" });
-
-    // Uri to load (Local path to css styles) into webview
-    const stylesResetUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      context.extensionUri,
-      "static",
-      "reset.css"
-    ));
-    const stylesMainUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      context.extensionUri,
-      "static",
-      "vscode.css"
-    ));
-
-    return `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="${stylesResetUri}" rel="stylesheet">
-		<link href="${stylesMainUri}" rel="stylesheet">
-     </head>
-     <body>
-        <div id="root"></div>
-        <script src="${reactAppUri}"></script>
-    </body>
-    </html>`;
-}
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
